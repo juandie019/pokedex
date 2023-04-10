@@ -1,20 +1,33 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types';
 import React from 'react';
-import { Text, View, Button } from 'react-native';
-import Icon from 'react-native-vector-icons/dist/Ionicons';
+import { FlatList, Text } from 'react-native';
+import { Image } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { usePokemonPaginated } from '../hooks/usePokemonPaginated';
+import { gstyles } from '../theme/appTheme';
 
-export const HomeScreen = ({ navigation }: NativeStackScreenProps<any, any>) => {
+export const HomeScreen = () => {
+  const { top } = useSafeAreaInsets();
+
+  const { simplePokemonList } = usePokemonPaginated();
+
   return (
-    <View>
-        <Text>Home Screen</Text>
-        <Icon
-          name="add-outline"
-          size={50}
-        />
-        <Button
-          title="Ir a pokemon"
-          onPress={ () =>  navigation.navigate('PokemonScreen')}
-        />
-    </View>
+    <>
+      <Image
+        source={ require('../assets/pokebola.png')}
+        style={ gstyles.pokeBolaBg }
+      />
+      <FlatList 
+        data={ simplePokemonList }
+        keyExtractor={ (pokemon) => pokemon.id }
+        renderItem={ ({item}) => <Text>{item.name}</Text>}
+      />
+      {/* <Text style={{
+        ...gstyles.title,
+        top: top + 20,
+        ...gstyles.globalMargin,
+      }}>
+        Pokedex
+      </Text> */}
+    </>
   );
 };
