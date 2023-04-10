@@ -5,6 +5,7 @@ import { RootStackParams } from '../navigator/Navigator';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { FadeInImage } from '../components/FadeInImage';
+import { usePokemon } from '../hooks/usePokemon';
 
 interface Props extends NativeStackScreenProps<RootStackParams, 'PokemonScreen'>{}
 
@@ -12,6 +13,10 @@ export const PokemonScreen = ({ navigation, route }: Props) => {
 
   const { simplePokemon, color } = route.params;
   const { top } = useSafeAreaInsets();
+
+  const { pokemon } = usePokemon(simplePokemon.id);
+
+  console.log(pokemon);
 
   return (
     <View>
