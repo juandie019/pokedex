@@ -14,7 +14,7 @@ export type RootStackParams = {
 
 const Stack = createNativeStackNavigator<RootStackParams>();
 
-export const Navigator = () => {
+export const Tab1Screen = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'white' } }}>
         <Stack.Screen name="Home" component={ HomeScreen } />
