@@ -1,19 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { pokemonApi } from '../api/pokemonApi';
 import { Pokemon, PokemonPaginatedResponse, SimplePokemon } from '../interfaces/pokeapiInterface';
 
-export const usePokemonPaginated = () => {
-
-    const nextPageUrl = useRef('https://pokeapi.co/api/v2/pokemon?limit=40');
+export const usePokemonSearch = () => {
     const [simplePokemonList, setSimplePokemonList] = useState<SimplePokemon[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isFetching, setIsFetching] = useState(true);
 
     const loadPokemons = async () => {
-        setIsLoading(true);
-        const response = await pokemonApi.get<PokemonPaginatedResponse>(nextPageUrl.current);
-        nextPageUrl.current = response.data.next;
+        const response = await pokemonApi.get<PokemonPaginatedResponse>('https://pokeapi.co/api/v2/pokemon?limit=1300');
         mapPokemonList(response.data.results);
-        setIsLoading(false);
+        setIsFetching(false);
     };
 
     const mapPokemonList = (pokemonList: Pokemon[]) => {
@@ -21,14 +17,11 @@ export const usePokemonPaginated = () => {
             const urlParts = url.split('/');
             const id = urlParts[urlParts.length - 2];
             const picture = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${ id }.png`;
-            return {
-                picture,
-                name,
-                id,
-            };
+
+            return { picture, name, id };
         });
 
-        setSimplePokemonList([...simplePokemonList, ...newPokemonList]);
+        setSimplePokemonList(newPokemonList);
     };
 
     useEffect( () => {
@@ -37,7 +30,6 @@ export const usePokemonPaginated = () => {
 
     return {
         simplePokemonList,
-        isLoading,
-        loadPokemons,
+        isFetching,
     };
 };

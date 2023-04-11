@@ -16,4 +16,9 @@ export const gstyles = StyleSheet.create({
       fontSize: 35,
       fontWeight: 'bold',
     },
+    activityContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
